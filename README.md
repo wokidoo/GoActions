@@ -1,3 +1,5 @@
+![GoActions](addons/goactions/icons/go_action_sequence.svg)
+---
 # GoActions
 
 A small Godot addon for wiring node behavior visually, without creating a new script for every event.
