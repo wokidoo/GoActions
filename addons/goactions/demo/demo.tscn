@@ -1,0 +1,165 @@
+[gd_scene format=3 uid="uid://bmvuo725kyo06"]
+
+[ext_resource type="Script" uid="uid://ducdj2y18k3xs" path="res://addons/goactions/scripts/go_action_sequence.gd" id="1_gvjif"]
+[ext_resource type="Script" uid="uid://d0gbhgj1qin8k" path="res://addons/goactions/scripts/go_action_parallel_sequence.gd" id="2_lxvgg"]
+[ext_resource type="Script" uid="uid://bhlun75ay7jma" path="res://addons/goactions/scripts/go_action_tween.gd" id="3_7yrfo"]
+[ext_resource type="Script" uid="uid://bsr4xae8p1i83" path="res://addons/goactions/scripts/go_action_caller.gd" id="4_lxvgg"]
+[ext_resource type="Script" uid="uid://cw7vs7yalfuaa" path="res://addons/goactions/scripts/go_action_delay.gd" id="4_w7uuf"]
+
+[sub_resource type="GDScript" id="GDScript_7yrfo"]
+resource_name = "test_button"
+script/source = "extends Button
+
+@onready var go_action_sequence: GoActionSequence = %GoActionSequence
+
+func _on_pressed() -> void:	
+	go_action_sequence.trigger()
+"
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_p48gp"]
+size = Vector2(25, 25)
+
+[sub_resource type="Curve" id="Curve_lxvgg"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_df0gf"]
+curve = SubResource("Curve_lxvgg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hmx0x"]
+particle_flag_disable_z = true
+inherit_velocity_ratio = 1.0
+spread = 180.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_df0gf")
+
+[node name="Demo" type="Control" unique_id=1466315991]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=903430528]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+offset_top = 550.0
+offset_right = 100.00116
+offset_bottom = 650.0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+offset_transform_position = Vector2(0, 550)
+
+[node name="Button" type="Button" parent="ColorRect" unique_id=173652978]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.5
+offset_top = -15.5
+offset_right = 31.5
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+text = "Trigger"
+script = SubResource("GDScript_7yrfo")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="ColorRect" unique_id=1022570164]
+position = Vector2(50, 50)
+emitting = false
+amount = 40
+texture = SubResource("PlaceholderTexture2D_p48gp")
+one_shot = true
+explosiveness = 1.0
+trail_lifetime = 0.1
+process_material = SubResource("ParticleProcessMaterial_hmx0x")
+
+[node name="GoActionSequence" type="Node" parent="ColorRect" unique_id=1573429487]
+unique_name_in_owner = true
+script = ExtResource("1_gvjif")
+trigger_mode = 0
+metadata/_custom_type_script = "uid://ducdj2y18k3xs"
+
+[node name="GoActionParallelSequence3" type="Node" parent="ColorRect/GoActionSequence" unique_id=1522980206]
+script = ExtResource("2_lxvgg")
+metadata/_custom_type_script = "uid://d0gbhgj1qin8k"
+
+[node name="GoActionTween" type="Node" parent="ColorRect/GoActionSequence/GoActionParallelSequence3" unique_id=253750620 node_paths=PackedStringArray("target_node")]
+script = ExtResource("3_7yrfo")
+target_node = NodePath("../../..")
+property_path = "position:x"
+final_value = 800.0
+duration = 1.5
+trans = 1
+ease = 1
+restore_initial_value = false
+metadata/_custom_type_script = "uid://bhlun75ay7jma"
+
+[node name="GoActionTween2" type="Node" parent="ColorRect/GoActionSequence/GoActionParallelSequence3" unique_id=978010999 node_paths=PackedStringArray("target_node")]
+script = ExtResource("3_7yrfo")
+target_node = NodePath("../../..")
+property_path = "rotation"
+final_value = 3.14
+metadata/_custom_type_script = "uid://bhlun75ay7jma"
+
+[node name="GoActionSequence" type="Node" parent="ColorRect/GoActionSequence/GoActionParallelSequence3" unique_id=193657809]
+script = ExtResource("1_gvjif")
+metadata/_custom_type_script = "uid://ducdj2y18k3xs"
+
+[node name="GoActionTween2" type="Node" parent="ColorRect/GoActionSequence/GoActionParallelSequence3/GoActionSequence" unique_id=1954378938 node_paths=PackedStringArray("target_node")]
+script = ExtResource("3_7yrfo")
+target_node = NodePath("../../../..")
+property_path = "position:y"
+final_value = 100.0
+duration = 0.33
+trans = 1
+ease = 1
+restore_initial_value = false
+metadata/_custom_type_script = "uid://bhlun75ay7jma"
+
+[node name="GoActionParallelSequence" type="Node" parent="ColorRect/GoActionSequence/GoActionParallelSequence3/GoActionSequence" unique_id=549806197]
+script = ExtResource("2_lxvgg")
+metadata/_custom_type_script = "uid://d0gbhgj1qin8k"
+
+[node name="GoActionTween3" type="Node" parent="ColorRect/GoActionSequence/GoActionParallelSequence3/GoActionSequence/GoActionParallelSequence" unique_id=1753293813 node_paths=PackedStringArray("target_node")]
+script = ExtResource("3_7yrfo")
+target_node = NodePath("../../../../..")
+property_path = "position:y"
+final_value = 550.0
+duration = 0.85
+trans = 9
+ease = 1
+restore_initial_value = false
+metadata/_custom_type_script = "uid://bhlun75ay7jma"
+
+[node name="GoActionSequence" type="Node" parent="ColorRect/GoActionSequence/GoActionParallelSequence3/GoActionSequence/GoActionParallelSequence" unique_id=1461426730]
+script = ExtResource("1_gvjif")
+metadata/_custom_type_script = "uid://ducdj2y18k3xs"
+
+[node name="GoActionDelay" type="Node" parent="ColorRect/GoActionSequence/GoActionParallelSequence3/GoActionSequence/GoActionParallelSequence/GoActionSequence" unique_id=1082285766]
+script = ExtResource("4_w7uuf")
+duration = 0.1
+metadata/_custom_type_script = "uid://cw7vs7yalfuaa"
+
+[node name="GoActionCaller" type="Node" parent="ColorRect/GoActionSequence/GoActionParallelSequence3/GoActionSequence/GoActionParallelSequence/GoActionSequence" unique_id=1662292134 node_paths=PackedStringArray("target_node")]
+script = ExtResource("4_lxvgg")
+target_node = NodePath("../../../../../../GPUParticles2D")
+method_name = &"restart"
+metadata/_custom_type_script = "uid://bsr4xae8p1i83"
+
+[node name="GoActionTween3" type="Node" parent="ColorRect/GoActionSequence" unique_id=1426025768 node_paths=PackedStringArray("target_node")]
+script = ExtResource("3_7yrfo")
+target_node = NodePath("../..")
+property_path = "position"
+final_value = Vector2(0, 550)
+trans = 5
+restore_initial_value = false
+metadata/_custom_type_script = "uid://bhlun75ay7jma"
+
+[connection signal="pressed" from="ColorRect/Button" to="ColorRect/Button" method="_on_pressed"]
