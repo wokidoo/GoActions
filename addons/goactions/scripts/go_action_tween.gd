@@ -2,13 +2,13 @@
 @icon("res://addons/goactions/icons/go_action_tween.svg")
 class_name GoActionTween extends GoAction
 ## Tweens the property of the [member target_node] when
-## [code]trigger()[/code] is callled.
+## [code]trigger()[/code] is called.
 ##
 ## If [code]trigger()[/code] is called before the tween operation
-## is finished, target properties initial value is restored before
+## is finished, target's properties initial value is restored before
 ## starting a new tween operation.
 
-## Target node who's property will be tweened. 
+## Target node whose property will be tweened. 
 @export var target_node:Node:
 	set(val):
 		if _tween and _tween.is_valid():

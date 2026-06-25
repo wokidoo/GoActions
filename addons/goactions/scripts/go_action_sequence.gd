@@ -1,7 +1,7 @@
 @tool
 @icon("res://addons/goactions/icons/go_action_sequence.svg")
 class_name GoActionSequence extends GoAction
-## Trigger a sequence of [GoAction] nodes in sequence.
+## Triggers a sequence of [GoAction] nodes.
 ##
 ## Child [GoAction] nodes will be triggered in order from
 ## first to last. Sequence will wait for each [GoAction] trigger to
@@ -59,5 +59,5 @@ func _notification(what: int) -> void:
 func _get_configuration_warnings() -> PackedStringArray:
 	for child in get_children():
 		if not child is GoAction:
-			return ["All child Nodes should be of type GoAction"]
+			return ["All child nodes should be of type GoAction"]
 	return []

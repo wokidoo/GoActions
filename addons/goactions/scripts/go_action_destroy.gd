@@ -1,8 +1,7 @@
 @tool
 @icon("res://addons/goactions/icons/go_action_destroy.svg")
 class_name GoActionDestroy extends GoAction
-## Queue's a [member target_node] node to be destroyed upon calling
-## [code]trigger()[/code]. 
+## Queues the [member target_node] for destruction when triggered.
 ##
 
 ## Node that will be queued to be destroyed upon trigger.

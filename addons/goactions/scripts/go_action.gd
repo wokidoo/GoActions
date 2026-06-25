@@ -2,9 +2,9 @@
 @abstract
 @icon("res://addons/goactions/icons/go_action.svg")
 class_name GoAction extends Node
-## Generic [GoAction] node. Used to trigger behaviour in other nodes.
+## Generic [GoAction] node. Used to trigger behavior in other nodes.
 ##
-## Allows behaviour to be triggered in other nodes wihtout
+## Allows behavior to be triggered in other nodes without
 ## needing scripting.
 ## [br][br][color=yellow][b]Note:[/b][/color][br]
 ## By default, [GoAction] does not do anything. If you would
@@ -31,7 +31,7 @@ signal finished()
 
 ## Trigger the [GoAction] behaviour for this node.
 ## [br][br][color=yellow][b]Warning:[/b][/color][br]
-## If you are implemeting your own [GoAction] type,
+## If you are implementing your own [GoAction] type,
 ## do not override this method. Instead, override [code]_trigger()[/code].
 func trigger()->void:
 	started.emit()

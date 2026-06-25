@@ -1,137 +1,134 @@
 # GoActions
 
-GoActions is a Godot editor addon for building reusable, visual action flows without writing new scripts for every trigger or behavior. It exposes a small set of `GoAction` node types that can call methods, sequence actions, delay execution, tween properties, destroy nodes, and emit debug messages — all through exported properties and scene composition.
+A small Godot addon for wiring node behavior visually, without creating a new script for every event.
 
-## Purpose
+GoActions provides a set of reusable action nodes that can trigger methods, sequence events, delay execution, tween properties, and destroy nodes, all using exported properties and scene composition.
 
-GoActions aims to make node behavior easier to assemble and reuse by separating *action definition* from *scripted logic*.
+---
 
-Key ideas:
-- Use a reusable `GoAction` base class as a generic trigger node.
-- Compose action graphs in the scene tree instead of hard-coding callbacks.
-- Trigger behavior in other nodes without subclassing or writing new custom scripts.
-- Support sequential and parallel execution patterns with built-in nodes.
+## 🤔 Why use GoActions?
 
-This follows the spirit of common design patterns like:
-- Command pattern: each `GoAction` encapsulates a triggerable operation.
-- Chain/sequence pattern: action nodes can be arranged in ordered workflows.
-- Composition over inheritance: combine ready-made actions without custom script logic.
+If you find yourself creating lots of one-off scripts to trigger other nodes, this addon helps move that logic into the scene tree.
 
-## Features
+It is especially useful when you want:
+
+- editor-driven gameplay flows
+- node interactions without extra script files
+- reusable action graphs across scenes
+- simple command-style behavior composition
+
+GoActions is inspired by common patterns like the command pattern and sequence/composite workflows.
+
+---
+
+## ✨ What it includes
 
 - `GoActionCaller`
-  - Call any method on a target node.
-  - Pass parameters to the target method.
+  - call any method on a target node
+  - pass parameters from the inspector
 - `GoActionSequence`
-  - Trigger child `GoAction` nodes one after another.
-  - Wait for each child to finish before the next starts.
+  - execute child actions one by one
+  - wait for each child to finish before continuing
 - `GoActionParallelSequence`
-  - Trigger child `GoAction` nodes simultaneously.
-  - Wait until all children complete.
+  - run child actions in parallel
+  - complete only when every child finishes
 - `GoActionDelay`
-  - Pause execution for a configurable duration.
-  - Useful between actions in a sequence.
+  - pause a flow for a fixed duration
 - `GoActionTween`
-  - Tween a target node property over time.
-  - Supports transition/ease types and optional value restore.
+  - tween a target node property over time
+  - supports transition/ease settings and optional restore
 - `GoActionDestroy`
-  - Queue-free a target node when triggered.
+  - call `queue_free()` on a node when triggered
 - `GoActionDebug`
-  - Print a timestamped debug warning when triggered.
-  - Useful for verifying action flow while editing.
+  - print a timestamped debug warning during execution
 
-## How it works
+---
 
-`GoAction` is the abstract base node:
-- It exposes a `trigger()` method.
-- It emits `started()` and `finished()` signals.
-- Custom actions implement `_trigger()` to define their behavior.
+## 🧠 How it works
 
-This enables:
-- Editor-driven workflows
-- Non-script wiring of behavior
-- Reuse across scenes
-- Simple visual orchestration of events
+`GoAction` is the abstract base type. It exposes a `trigger()` method and uses signals:
 
-## Installation
+- `started()` when execution begins
+- `finished()` when execution completes
 
-1. Place the goactions folder in your project.
-2. Open Project → Project Settings → Plugins.
+Concrete action nodes implement `_trigger()` to define their behavior. This lets you treat actions like reusable commands that can be composed in the scene tree.
+
+---
+
+## ⚙️ Installation
+
+1. Copy the `addons/goactions` folder into your Godot project.
+2. Open `Project > Project Settings > Plugins`.
 3. Enable `GoActions`.
 
-## Usage
+---
 
-### Basic method-calling example
+## 🚀 Getting started
 
-Add a `GoActionCaller` node, then configure:
-- `target_node` → the node that owns the method
-- `method_name` → the method to call
-- `parameters` → parameters for the call
+### Basic action caller
 
-Then call `trigger()` or use the editor tool button to test.
+1. Add a `GoActionCaller` node.
+2. Set `target_node` to the node you want to control.
+3. Set `method_name` to the function you want to call.
+4. Add any required `parameters`.
 
-### Sequence example
+Then call `trigger()` from code or connect it inside a larger action flow.
 
-Use `GoActionSequence` with child action nodes:
+### Build a sequence
 
-- `GoActionCaller` to call one method
-- `GoActionDelay` to pause
-- another `GoActionCaller`
+Use `GoActionSequence` and add child actions in order:
 
-This creates a simple workflow:
-1. invoke method A
-2. wait
-3. invoke method B
+- `GoActionCaller`
+- `GoActionDelay`
+- `GoActionCaller`
 
-### Parallel example
+This creates a timeline like:
 
-Use `GoActionParallelSequence` with multiple child actions to run them at once and finish only when all are complete.
+1. method A runs
+2. pause
+3. method B runs
 
-### Tween example
+### Run actions in parallel
 
-Use `GoActionTween` to animate a property:
-- `target_node`
-- `property_path`
-- `final_value`
-- `duration`
-- `trans` / `ease`
+Use `GoActionParallelSequence` to start multiple actions at once and wait until they all complete.
 
-### Destroy example
+---
 
-Use `GoActionDestroy` to remove a node from the scene when the action triggers.
+## 🧩 Example
 
-### Debug example
-
-Add `GoActionDebug` to a flow to print a message and confirm the sequence is running as expected.
-
-## Example Scene Setup
-
-```gdscript
-# Example conceptual setup:
+```text
 Root
  ├─ GoActionSequence
- │    ├─ GoActionCaller (call "start" on Player)
+ │    ├─ GoActionCaller (target_node = Player, method_name = "start")
  │    ├─ GoActionDelay (duration = 0.5)
- │    ├─ GoActionTween (tween Player.position to Vector2(200, 100))
+ │    ├─ GoActionTween (target_node = Player, property_path = "position", final_value = Vector2(200, 100))
  │    └─ GoActionDebug (message = "Player move complete")
  └─ GoActionDestroy (target_node = OldEnemy)
 ```
 
-This lets you build event-driven logic visually using nodes instead of writing new scripts for each interaction.
-
-## Why use GoActions?
-
-- Reduce boilerplate code for simple node triggers
-- Keep scenes declarative and easier to inspect
-- Avoid creating one-off scripts for transient interactions
-- Make workflows easier to reuse and maintain
-
-## Notes
-
-- `GoAction` itself does nothing until a subclass implements `_trigger()`.
-- `GoActionSequence` and `GoActionParallelSequence` are ideal for composing complex flows.
-- The plugin is designed for editor-friendly behavior wiring and rapid prototyping.
+This setup is ideal for prototyping and iterating without adding specialized script logic to every node.
 
 ---
 
-GoActions is especially useful when you want to trigger behavior across nodes without creating separate custom scripts for every case. It makes action orchestration feel more like building a flowchart of node interactions than writing event code.
+## 💡 Use cases
+
+- trigger animations from the editor
+- sequence UI events without custom scripts
+- delay gameplay actions for timing
+- tween object properties from the inspector
+- destroy temporary nodes after an event
+- add debug output to verify action order
+
+---
+
+## 📌 Notes
+
+- `GoAction` does nothing by itself until a subclass implements `_trigger()`.
+- `GoActionSequence` and `GoActionParallelSequence` are designed for composing reusable flows.
+- This addon is best when you want behavior configured in scenes rather than in many custom scripts.
+- This project was inspired by the following [presentation](https://youtu.be/hOh7w-RZRSI?si=kn4yrVluKo5akVds) by **ROKOJORI** at GodotCon 2026. Credit to them for the inspiration :)
+---
+
+## 🤝 Contributing
+
+If you want to add new action types, improve documentation, or suggest enhancements, please open an issue. Feedback is welcome and appreciated!

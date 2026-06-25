@@ -1,10 +1,10 @@
 @tool
 @icon("res://addons/goactions/icons/go_action_parallel_sequence.svg")
 class_name GoActionParallelSequence extends GoActionSequence
-## Trigger a sequence of [GoAction] nodes in sequence parallel to one another.
+## Triggers child [GoAction] nodes in parallel.
 ##
 ## Child [GoAction] nodes will be triggered all at once.
-## Execution of [code]trigger()[/code] only ends once the last 
+## Execution of [code]trigger()[/code] only ends once the last
 ## child [GoAction] node finishes executing.
 
 func _trigger()->void:
