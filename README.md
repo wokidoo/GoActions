@@ -1,12 +1,9 @@
 ![GoActions](addons/goactions/icons/go_action_sequence.svg)
----
 # GoActions
 
 A small Godot addon for wiring node behavior visually, without creating a new script for every event.
 
 GoActions provides a set of reusable action nodes that can trigger methods, sequence events, delay execution, tween properties, and destroy nodes, all using exported properties and scene composition.
-
----
 
 ## 🤔 Why use GoActions?
 
@@ -20,8 +17,6 @@ It is especially useful when you want:
 - simple command-style behavior composition
 
 GoActions is inspired by common patterns like the command pattern and sequence/composite workflows.
-
----
 
 ## ✨ What it includes
 
@@ -44,8 +39,6 @@ GoActions is inspired by common patterns like the command pattern and sequence/c
 - `GoActionDebug`
   - print a timestamped debug warning during execution
 
----
-
 ## 🧠 How it works
 
 `GoAction` is the abstract base type. It exposes a `trigger()` method and uses signals:
@@ -55,15 +48,11 @@ GoActions is inspired by common patterns like the command pattern and sequence/c
 
 Concrete action nodes implement `_trigger()` to define their behavior. This lets you treat actions like reusable commands that can be composed in the scene tree.
 
----
-
 ## ⚙️ Installation
 
 1. Copy the `addons/goactions` folder into your Godot project.
 2. Open `Project > Project Settings > Plugins`.
 3. Enable `GoActions`.
-
----
 
 ## 🚀 Getting started
 
@@ -110,8 +99,6 @@ Root
 
 This setup is ideal for prototyping and iterating without adding specialized script logic to every node.
 
----
-
 ## 💡 Use cases
 
 - trigger animations from the editor
@@ -121,15 +108,12 @@ This setup is ideal for prototyping and iterating without adding specialized scr
 - destroy temporary nodes after an event
 - add debug output to verify action order
 
----
-
 ## 📌 Notes
 
 - `GoAction` does nothing by itself until a subclass implements `_trigger()`.
 - `GoActionSequence` and `GoActionParallelSequence` are designed for composing reusable flows.
 - This addon is best when you want behavior configured in scenes rather than in many custom scripts.
 - This project was inspired by the following [presentation](https://youtu.be/hOh7w-RZRSI?si=kn4yrVluKo5akVds) by **ROKOJORI** at GodotCon 2026. Credit to them for the inspiration :)
----
 
 ## 🤝 Contributing
 
